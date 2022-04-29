@@ -1,3 +1,17 @@
+# Arquivos de configuração
+**/artefatos/*.tar.gz
+**/artefatos/*.zip
+
+# Arquivos em diretório sensível
+**/secrets/*.pub
+**/secrets/id_*
+**/secrets/*.pem
+**/secrets/*.ppk
+**/secrets/*key*
+
+# Arquivo que contem dados sensíveis
+provider.tf
+
 # Local .terraform directories
 **/.terraform/*
 
@@ -27,3 +41,6 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
+
+# Include DS_Store files to ignore the Mac OS X file system metadata
+*.DS_Store
