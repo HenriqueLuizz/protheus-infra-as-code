@@ -7,6 +7,12 @@ variable shape { default = "VM.Standard.E4.Flex" }
 variable ocpus { default = 2 }
 variable memory { default = 16 }
 
+## Variáveis da instancia aplicação secundaria
+variable sec_instances { default = 1 }
+variable sec_shape { default = "VM.Standard.E3.Flex" }
+variable sec_ocpus { default = 2 }
+variable sec_memory { default = 16 }
+
 ## Variáveis da instancia banco de dados
 variable db_shape { default = "VM.Standard.A1.Flex" }
 variable db_ocpus { default = 2 }
@@ -17,7 +23,6 @@ variable ssh_file_public_key { default = "secrets/id_rsakey.pub" }
 variable ssh_private_key { default = "secrets/id_rsakey" }
 
 ## Variáveis de configuração cloud
-variable region { default = "us-ashburn-1" }
 variable OCI_AD {
   description = "Available AD's in OCI"
   type        = map

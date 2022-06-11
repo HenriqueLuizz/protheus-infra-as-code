@@ -1,3 +1,6 @@
+########################################################################################################################
+########################################################################################################################
+## Bloco que cria um disco adicional que será utilizado na instancia de aplicação
 resource "oci_core_volume" "storage_block" {
   count               = var.instances
   availability_domain = var.OCI_AD["AD1"]
@@ -6,18 +9,28 @@ resource "oci_core_volume" "storage_block" {
   size_in_gbs         = "512"
 }
 
+########################################################################################################################
+########################################################################################################################
+## Bloco que conecta o disco criado a instancia de aplicação
 resource "oci_core_volume_attachment" "storage_block_attach" {
   count           = var.instances
   attachment_type = "paravirtualized"
   instance_id     = oci_core_instance.inst_universototvs[count.index].id
   volume_id       = oci_core_volume.storage_block[count.index].id
-
+  
+  # Quando terminar o attach do disco a instancia, vamos conectar na instancia e executar os comandos de configuração
+  # Neste ponto a instancia estará no estado de "RUNNING" e conseguimos realizar todas as configurações necessárias.
   connection {
     type        = "ssh"
     host        = oci_core_instance.inst_universototvs[count.index].public_ip
     user        = "opc"
     private_key = file(var.ssh_private_key)
     agent       = false
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/config_files/setup_instance.sh"
+    destination = "/tmp/setup_instance.sh"
   }
 
   provisioner "remote-exec" {
@@ -27,7 +40,7 @@ resource "oci_core_volume_attachment" "storage_block_attach" {
       "sudo mount -t xfs /dev/sdb /totvs",
       "echo '/dev/sdb /totvs xfs defaults,_netdev,nofail 0 2' | sudo tee -a /etc/fstab",
       "sudo wget https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.bucket_preauthenticated_request.access_uri} -O /tmp/protheus_bundle_12.1.33.tar.gz",
-      "/bin/bash /tmp/install_protheus.sh"
+      "/bin/bash /tmp/setup_instance.sh primary"
     ]
   }
 
