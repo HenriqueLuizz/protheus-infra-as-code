@@ -3,7 +3,7 @@
 ## Bloco que cria um disco adicional que será utilizado na instancia de aplicação
 resource "oci_core_volume" "storage_block" {
   count               = var.instances
-  availability_domain = var.OCI_AD["AD1"]
+  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1],"name")
   compartment_id      = var.compartment_ocid
   display_name        = "${var.prefix}-vol-instance${count.index}"
   size_in_gbs         = "512"
@@ -17,7 +17,7 @@ resource "oci_core_volume_attachment" "storage_block_attach" {
   attachment_type = "paravirtualized"
   instance_id     = oci_core_instance.inst_universototvs[count.index].id
   volume_id       = oci_core_volume.storage_block[count.index].id
-  
+
   # Quando terminar o attach do disco a instancia, vamos conectar na instancia e executar os comandos de configuração
   # Neste ponto a instancia estará no estado de "RUNNING" e conseguimos realizar todas as configurações necessárias.
   connection {
@@ -39,9 +39,9 @@ resource "oci_core_volume_attachment" "storage_block_attach" {
       "sudo mkfs.xfs /dev/sdb",
       "sudo mount -t xfs /dev/sdb /totvs",
       "echo '/dev/sdb /totvs xfs defaults,_netdev,nofail 0 2' | sudo tee -a /etc/fstab",
-      "sudo wget https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.bucket_preauthenticated_request.access_uri} -O /tmp/protheus_bundle_12.1.33.tar.gz",
-      "/bin/bash /tmp/setup_instance.sh primary"
+      # "sudo wget https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.bucket_preauthenticated_request.access_uri} -O /tmp/${var.bundle_name}",
     ]
+    on_failure = continue
   }
 
   ## Apenas para attachment do tipo ISCSI  (attachment_type = "iscsi")
