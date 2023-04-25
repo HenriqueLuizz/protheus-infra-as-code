@@ -31,7 +31,7 @@ resource "oci_core_route_table" "routetable1" {
   vcn_id         = oci_core_vcn.vcn_universototvs.id # Vcn onde será criado
 
   route_rules { # Criando uma rota para a vcn
-    cidr_block        = "0.0.0.0/0"
+    destination        = "0.0.0.0/0"
     network_entity_id = oci_core_internet_gateway.internetgateway1.id
   }
 }
@@ -42,7 +42,7 @@ resource "oci_core_route_table" "routetable2" {
   vcn_id         = oci_core_vcn.vcn_universototvs.id # Vcn onde será criado
 
   route_rules { # Criando uma rota para a vcn
-    cidr_block        = "0.0.0.0/0"
+    destination        = "0.0.0.0/0"
     network_entity_id = oci_core_nat_gateway.nat_gateway.id
   }
 }

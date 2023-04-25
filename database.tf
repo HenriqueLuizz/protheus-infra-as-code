@@ -78,7 +78,7 @@ resource "oci_core_instance" "inst_postgresql" {
   }
 
   provisioner "local-exec" { # Define um bloco de provisionamento local
-    command = "echo ${self.hostname_label} ansible_host=${self.public_ip} >> ./ansible/hosts"
+    command = "echo ${self.display_name} ansible_host=${self.public_ip} >> ./ansible/hosts"
     # Grava no arquivo hosts do ansible o nome do host e ip (apenas exemplo)
   }
 
