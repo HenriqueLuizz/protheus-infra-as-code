@@ -15,10 +15,10 @@ resource "oci_objectstorage_bucket" "bucket_universo" {
 # Bloco que carrega um arquivo para a bucket criada anteriormente
 resource "oci_objectstorage_object" "bucket_object" {
   #Required
-  bucket    = oci_objectstorage_bucket.bucket_universo.name             # Nome do bucket   
-  source    = "${path.module}/artefatos/${var.bundle_name}"             # Caminho do arquivo a ser carregado
-  namespace = oci_objectstorage_bucket.bucket_universo.namespace        # Namespace onde o bucket será criado
-  object    = "protheus.tar.gz"                                         # O nome que o arquivo terá dentro da bucket
+  bucket    = oci_objectstorage_bucket.bucket_universo.name      # Nome do bucket   
+  source    = "${path.module}/artefatos/${var.bundle_name}"      # Caminho do arquivo a ser carregado
+  namespace = oci_objectstorage_bucket.bucket_universo.namespace # Namespace onde o bucket será criado
+  object    = "protheus.tar.gz"                                  # O nome que o arquivo terá dentro da bucket
 }
 ########################################################################################################################
 ########################################################################################################################

@@ -3,7 +3,7 @@
 ## Bloco que cria um disco adicional que será utilizado na instancia de aplicação
 resource "oci_core_volume" "storage_block" {
   count               = var.instances
-  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1],"name")
+  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1], "name")
   compartment_id      = var.compartment_ocid
   display_name        = "${var.prefix}-vol-instance${count.index}"
   size_in_gbs         = "512"

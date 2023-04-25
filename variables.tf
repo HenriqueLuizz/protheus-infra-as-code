@@ -28,7 +28,7 @@ variable ssh_private_key { default = "secrets/id_rsakey" }
 ## Variáveis de configuração cloud
 variable OCI_AD {
   description = "Available AD's in OCI"
-  default = 1
+  default     = 1
 }
 # Para obter os ocid das imagens consulte o site 
 # https://docs.oracle.com/en-us/iaas/images/
@@ -46,5 +46,5 @@ variable bundle_name { default = "protheus_bundle_12.1.2210.tar.gz" }
 
 ## Datasource recupera os ADs do compartment
 data "oci_identity_availability_domains" "ADs" {
-  compartment_id        = var.tenancy_ocid
+  compartment_id = var.tenancy_ocid
 }

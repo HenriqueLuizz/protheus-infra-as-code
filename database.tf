@@ -9,9 +9,9 @@
 # Todas as variáveis deste projeto estão definidas no arquivo variables.tf, mas também podem ser definidas no aquivo terraform.tfvars e são passadas para o Terraform através do
 # comando `terraform apply`, para mais detalhes sobre as variaveis, consulte a documentação https://www.terraform.io/language/values/variables#variable-definitions-tfvars-files
 resource "oci_core_instance" "inst_postgresql" {
-  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1],"name")           # Define o AD onde a instancia será criada
-  compartment_id      = var.compartment_ocid        # Define o compartamento onde a instancia será criada
-  display_name        = "${var.prefix}-vm-database" # Define o nome da instancia (no portal)
+  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1], "name") # Define o AD onde a instancia será criada
+  compartment_id      = var.compartment_ocid                                                                            # Define o compartamento onde a instancia será criada
+  display_name        = "${var.prefix}-vm-database"                                                                     # Define o nome da instancia (no portal)
 
   agent_config { # Define as configurações dos plugins
     is_management_disabled = "false"
@@ -78,12 +78,12 @@ resource "oci_core_instance" "inst_postgresql" {
   }
 
   provisioner "local-exec" { # Define um bloco de provisionamento local
-    command = "echo ${self.hostname_label} ansible_host=${self.public_ip} >> ./ansible/hosts" 
+    command = "echo ${self.hostname_label} ansible_host=${self.public_ip} >> ./ansible/hosts"
     # Grava no arquivo hosts do ansible o nome do host e ip (apenas exemplo)
   }
 
   provisioner "remote-exec" { # Define um bloco de provisionamento remote-exec (executa um comando na instancia)
-    connection { # Define as configurações de conexão da instancia, necessário para acessar a instancia e executar comandos remotamente
+    connection {              # Define as configurações de conexão da instancia, necessário para acessar a instancia e executar comandos remotamente
       type        = "ssh"
       host        = self.public_ip            # Coleta o IP publico da instancia durante o provisionamento
       user        = "opc"                     # Define o usuario que será utilizado para acessar a instancia
@@ -101,10 +101,10 @@ resource "oci_core_instance" "inst_postgresql" {
 ########################################################################################################################
 ## Bloco que cria um disco adicional que será utilizado na instancia de banco de dados
 resource "oci_core_volume" "storage_block_postgresql" {
-  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1],"name")              # Define o AD onde o volume será criado
-  compartment_id      = var.compartment_ocid           # Define o compartamento onde o volume será criado
-  display_name        = "${var.prefix}-vol-postgresql" # Define o nome do volume (no portal)
-  size_in_gbs         = "256"                          # Define o tamanho do volume (em GB)
+  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1], "name") # Define o AD onde o volume será criado
+  compartment_id      = var.compartment_ocid                                                                            # Define o compartamento onde o volume será criado
+  display_name        = "${var.prefix}-vol-postgresql"                                                                  # Define o nome do volume (no portal)
+  size_in_gbs         = "256"                                                                                           # Define o tamanho do volume (em GB)
 }
 ########################################################################################################################
 ########################################################################################################################

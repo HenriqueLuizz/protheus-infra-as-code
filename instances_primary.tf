@@ -10,10 +10,10 @@
 # comando `terraform apply`, para mais detalhes sobre as variaveis, consulte a documentação https://www.terraform.io/language/values/variables#variable-definitions-tfvars-files
 ########################################################################################################################
 resource "oci_core_instance" "inst_universototvs" {
-  count               = var.instances                           # Quantidade de instancias a serem criadas
-  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1],"name")                      # Define o AD onde será criada a instancia
-  compartment_id      = var.compartment_ocid                    # Define o compartamento onde será criada a instancia
-  display_name        = "${var.prefix}-inst-app-${count.index}" # Define o nome da instancia
+  count               = var.instances                                                                                   # Quantidade de instancias a serem criadas
+  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.OCI_AD - 1], "name") # Define o AD onde será criada a instancia
+  compartment_id      = var.compartment_ocid                                                                            # Define o compartamento onde será criada a instancia
+  display_name        = "${var.prefix}-inst-app-${count.index}"                                                         # Define o nome da instancia
 
   agent_config { # Define as configurações do agente
     is_management_disabled = "false"
@@ -80,12 +80,12 @@ resource "oci_core_instance" "inst_universototvs" {
   }
 
   provisioner "local-exec" { # Define um bloco de provisionamento local
-    command = "echo ${self.hostname_label} ansible_host=${self.public_ip} >> ./ansible/hosts" 
+    command = "echo ${self.hostname_label} ansible_host=${self.public_ip} >> ./ansible/hosts"
     # Grava no arquivo hosts do ansible o nome do host e ip (apenas exemplo)
   }
 
   provisioner "remote-exec" { # Define um bloco de provisionamento remote-exec (executa um comando na instancia)
-    connection { # Define as configurações de conexão da instancia, necessário para acessar a instancia e executar comandos remotamente
+    connection {              # Define as configurações de conexão da instancia, necessário para acessar a instancia e executar comandos remotamente
       type        = "ssh"
       host        = self.public_ip            # Coleta o IP publico da instancia durante o provisionamento
       user        = "opc"                     # Define o usuario que será utilizado para acessar a instancia
