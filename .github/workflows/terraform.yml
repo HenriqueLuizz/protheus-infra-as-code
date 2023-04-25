@@ -44,7 +44,7 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       working-directory: .
-      run: terraform plan -input=false
+      run: terraform plan
       env:
         TF_VAR_prefix: "ut23"
         TF_VAR_instances: 1
@@ -62,7 +62,7 @@ jobs:
         TF_VAR_ssh_private_key: "secrets/id_cloud"
         TF_VAR_bundle_name: "protheus_bundle.md"
         TF_VAR_tenancy_ocid: ${{ secrets.TF_TENANCY_OCID }}
-        TF_VAR_user_ocid: ${{ secrets.TF_TENANCY_OCID }}
+        TF_VAR_user_ocid: ${{ secrets.TF_USER_OCID }}
         TF_VAR_fingerprint: ${{ secrets.TF_FINGERPRINT }}
         TF_VAR_private_key: ${{ secrets.TF_PRIVATE_KEY }}
         TF_VAR_compartment_ocid: ${{ secrets.TF_COMPARTMENT_OCID }}
@@ -91,7 +91,7 @@ jobs:
         TF_VAR_ssh_private_key: "secrets/id_cloud"
         TF_VAR_bundle_name: "protheus_bundle.md"
         TF_VAR_tenancy_ocid: ${{ secrets.TF_TENANCY_OCID }}
-        TF_VAR_user_ocid: ${{ secrets.TF_TENANCY_OCID }}
+        TF_VAR_user_ocid: ${{ secrets.TF_USER_OCID }}
         TF_VAR_fingerprint: ${{ secrets.TF_FINGERPRINT }}
         TF_VAR_private_key: ${{ secrets.TF_PRIVATE_KEY }}
         TF_VAR_compartment_ocid: ${{ secrets.TF_COMPARTMENT_OCID }}
