@@ -24,7 +24,7 @@ resource "oci_core_volume_attachment" "storage_block_attach" {
     type        = "ssh"
     host        = oci_core_instance.inst_universototvs[count.index].public_ip
     user        = "opc"
-    private_key = file(var.ssh_private_key)
+    private_key = var.ssh_key_priv
     agent       = false
   }
 

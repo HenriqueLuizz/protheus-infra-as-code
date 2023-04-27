@@ -76,7 +76,7 @@ resource "oci_core_instance" "inst_universototvs_secundaria" {
   }
 
   metadata = {
-    ssh_authorized_keys = file(var.ssh_file_public_key) # Define o ssh public key da instancia
+    ssh_authorized_keys = var.ssh_key_pub # Define o ssh public key da instancia
   }
 
   provisioner "local-exec" { # Define um bloco de provisionamento local
@@ -89,7 +89,7 @@ resource "oci_core_instance" "inst_universototvs_secundaria" {
       type        = "ssh"
       host        = self.public_ip            # Coleta o IP publico da instancia durante o provisionamento
       user        = "opc"                     # Define o usuario que será utilizado para acessar a instancia
-      private_key = file(var.ssh_private_key) # Define o arquivo com o private key da instancia (Chave privada da chave publica passada no parametro ssh_authorized_keys)
+      private_key = var.ssh_key_priv # Define o arquivo com o private key da instancia (Chave privada da chave publica passada no parametro ssh_authorized_keys)
       agent       = false
     }
     inline = ["sudo systemctl stop firewalld",
@@ -124,7 +124,7 @@ resource "oci_core_volume_attachment" "storage_block_attach_sec" {
       type        = "ssh"
       host        = oci_core_instance.inst_universototvs[count.index].public_ip
       user        = "opc"
-      private_key = file(var.ssh_private_key)
+      private_key = var.ssh_key_priv
       agent       = false
     }
 

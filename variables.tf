@@ -22,8 +22,16 @@ variable db_memory { default = 16 }
 variable db_platform { default = "aarch64" }
 
 ## Variáveis de configuração
-variable ssh_file_public_key { default = "secrets/id_rsakey.pub" }
-variable ssh_private_key { default = "secrets/id_rsakey" }
+variable ssh_key_pub {
+  description = "Conteudo da chave publica Ex. export TF_VAR_ssh_key_pub=$(cat ./secrets/id_cloud.pub)"
+  type        = string
+  sensitive   = true
+}
+variable ssh_key_priv {
+  description = "Conteudo da chave privada Ex. export TF_VAR_ssh_key_priv=$(cat ./secrets/id_cloud)"
+  type        = string
+  sensitive   = true
+}
 
 ## Variáveis de configuração cloud
 variable OCI_AD {
